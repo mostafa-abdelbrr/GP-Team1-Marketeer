@@ -13,7 +13,8 @@ router.get('/', (req, res, ) => {
 router.post('/', upload.single('file'), (req, res) => {
     const title = req.body.title;
     const file = req.file;
-    console.log('Prcessing file:\n' + req.file);
+    console.log('Prcessing file:');
+    console.log(req.file);
     const pyProg = spawn('python', ['../analytics/analytics.py', '\\uploads\\' + req.file.filename]);
 
     pyProg.stdout.on('data', function(data) {
