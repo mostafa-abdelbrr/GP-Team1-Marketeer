@@ -1,0 +1,106 @@
+/* body {
+  background-color: #ffffff;
+} */
+
+.Title {
+  display: flex;
+  flex-direction: row;
+  top: -10;
+  background-color: #ffffff;
+}
+
+.title {
+  font-size: 55px;
+  font-stretch: wider;
+  font-weight: bold;
+  color: #0a0263;
+  margin-top: 6%;
+  font-family: "Snippet", sans-serif;
+  font-weight: bolder;
+  font-stretch: expanded;
+}
+
+.logo {
+  width: 20%;
+  height: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -5%;
+}
+
+.NextBt {
+  background-color: #cf142a00;
+  color: #234691;
+  /* width: 12%; */
+  padding: 10px 20px;
+  border: 7px solid #234691;
+  border-radius: 20px;
+  transition: background-color 1s ease;
+  margin-left: 30%;
+  height: 10%;
+  width: 30%;
+  font-size: 30px;
+  margin-top: 2%;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+.NextBt:hover {
+  /* background-color: #45a049; */
+  cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+  .title {
+    font-size: 30px;
+    margin-top: 10%;
+  }
+  .logo {
+    width: 30%;
+    height: 30%;
+    margin-top: -5%;
+  }
+  .NextBt {
+    margin-top: 10%;
+  }
+}
+
+.VisionText {
+  font-size: 20px;
+  font-weight: bold;
+  color: #0a0263;
+  margin-left: 10%;
+  margin-top: 5%;
+  font-family: "Gill Sans";
+  font-stretch: expanded;
+  width: 60%;
+}
+
+.VisionText2 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #0a0263;
+  margin-left: 10%;
+  margin-top: 3%;
+  font-family: "Gill Sans";
+  font-stretch: expanded;
+  width: 60%;
+}
+
+.Vision {
+  display: flex;
+  flex-direction: row;
+  font-size: 60px;
+  /* font-weight: bold; */
+  color: #0a0263;
+  margin-left: 8%;
+  margin-top: -6%;
+  margin-bottom: -2%;
+  font-family: "Gill Sans";
+  font-stretch: expanded;
+}
+
+.sample {
+  width: 30%;
+  height: 100vh;
+}
