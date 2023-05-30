@@ -5,8 +5,7 @@ const upload = multer({ dest: 'uploads/' })
 const spawn = require('child_process').spawn;
 
 router.get('/', (req, res, ) => {
-    res.json({message: "Analytics endpoint is up"});
-    console.log('sent.')
+    res.json({message: "Analytics endpoint is up."});
     
 });
 
