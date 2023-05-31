@@ -42,5 +42,5 @@
 @font-face {
   font-family: "Regular";   /*Can be any text*/
   src: local("SamsungSans-Regular"),
-    url("D:/GP-Team1-Analytics/gp-app/src/Fonts/SamsungSans-Regular.ttf") format("truetype");
+    url("Fonts/SamsungSans-Regular.ttf") format("truetype");
 }
