@@ -1,7 +1,7 @@
-var express = require('express');
-var path = require('path');
-var analyticsRouter = require('./routes/analytics');
-var http = require('http');
+const express = require('express');
+const path = require('path');
+const analyticsRouter = require('./routes/analytics');
+const http = require('http');
 
 var app = express();
 
