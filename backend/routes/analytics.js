@@ -26,10 +26,10 @@ router.post('/', upload.single('userFile'), (req, res) => {
     console.log('Prcessing file:');
     console.log(req.file);
     const pyProg = spawn('python', ['../analytics/analytics.py', '\\uploads\\' + req.file.filename]);
-
+    let msg = ''
     pyProg.stdout.on('data', function(data) {
         console.log(data.toString());
-        res.write(data);
+        msg += data.toString() + '\n'
     });
 
     pyProg.on('exit', function(code, signal) {
@@ -44,7 +44,7 @@ router.post('/', upload.single('userFile'), (req, res) => {
         //         console.log('Sent:', fileName);
         //     }
         // });
-        res.end();
+        res.json({message: msg});
         console.log('Sent response.')
     });
 });
