@@ -8,18 +8,7 @@ const spawn = require('child_process').spawn;
 router.get('/', (req, res, ) => {
     // res.json({message: "Analytics endpoint is up."});
     const fileName = '/screenshots/frame0.jpg';
-        const options = {
-            root: path.resolve(__dirname, '../../analytics/')
-        };
-        res.sendFile(fileName, options, function (err) {
-            if (err) {
-                console.log(path.resolve(__dirname, '../../analytics/'));
-                console.log(err);
-            } else {
-                console.log('Sent:', fileName);
-            }
-        });
-    
+    res.json({dataAnalysis: path.resolve(__dirname, '../../analytics/' + fileName)});
 });
 
 router.post('/', upload.single('userFile'), (req, res) => {
