@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const analyticsRouter = require('./routes/analytics');
 const http = require('http');
@@ -8,6 +9,7 @@ var app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors({origin: "http://localhost:3000"}));
 app.use('/analytics', analyticsRouter);
 
 // // error handler
