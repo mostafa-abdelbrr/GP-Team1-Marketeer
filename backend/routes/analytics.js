@@ -22,7 +22,7 @@ router.get('/', (req, res, ) => {
     
 });
 
-router.post('/', upload.single('file'), (req, res) => {
+router.post('/', upload.single('userFile'), (req, res) => {
     console.log('Prcessing file:');
     console.log(req.file);
     const pyProg = spawn('python', ['../analytics/analytics.py', '\\uploads\\' + req.file.filename]);
