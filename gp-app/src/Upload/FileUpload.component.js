@@ -184,7 +184,7 @@ function UploadPage() {
         .then(
           (response) => {
             console.log(response);
-            Continue();
+            // Continue();
           },
           (error) => {
             console.log(error);
