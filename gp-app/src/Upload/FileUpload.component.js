@@ -178,8 +178,8 @@ function UploadPage() {
       const instance = axios.create({ baseURL: "http://localhost:8080" });
 
       instance
-        .post("/analytics", {
-          userfiles: selectedFile,
+        .postForm("/analytics", {
+          userFile: selectedFile,
         })
         .then(
           (response) => {
