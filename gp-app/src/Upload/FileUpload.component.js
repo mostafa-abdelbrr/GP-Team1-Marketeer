@@ -175,7 +175,9 @@ function UploadPage() {
       // });
       
       ///////////////////////// Use The Code Below /////////////////////////////////
-      axios
+      const instance = axios.create({ baseURL: "http://localhost:8080" });
+
+      instance
         .post("/analytics", {
           userfiles: selectedFile,
         })
