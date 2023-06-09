@@ -15,13 +15,14 @@ from skimage.color import rgb2gray
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 mp_hands = mp.solutions.hands
-
+from training import train, detectProducts
+plt.ioff()
 def find_shelves(image):
       im = rgb2gray(image)
     #   print("shape after",im.shape)
       fig, ax = plt.subplots()
-      ax.imshow(im)
-      ax.axis('image')
+    #   ax.imshow(im)
+    #   ax.axis('image')
       # plt.show()
     
       relief = im.mean(axis=1)
@@ -192,7 +193,7 @@ def main(filename):
     # filename3=sys.argv[1]
     cap = cv2.VideoCapture(filename)
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    fps = cap.get(cv2.CAP_PROP_FPS)
+    # fps = cap.get(cv2.CAP_PROP_FPS)
     frame_width = int( cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height =int( cap.get( cv2.CAP_PROP_FRAME_HEIGHT))
     # print(frame_width)
@@ -420,8 +421,8 @@ def main(filename):
                 # image = cv2.resize(image, (920,680))
                 # out.write(image)
                 # cv2.imshow('Hand Tracking', frame1)
-                for _ in range(int(fps)):
-                    cap.read()
+                # for _ in range(int(fps)):
+                #     cap.read()
                 frame1 = frame2
                 ret, frame2 = cap.read()#read
                 if ret==False:
@@ -434,7 +435,9 @@ def main(filename):
 
 
     save_frames(cropped_photos)
-
+    print(f'Starting detection, len of imgs = {len(cropped_photos)}.')
+    detectProducts(cropped_photos)
+    
     sizes = [counter_onShelf,
     counter_awayShelf]  # Sizes or proportions of different categories
     labels = ['Near shelf', 'Away from shelf']  # Labels for each category
@@ -446,19 +449,22 @@ def main(filename):
         print("As the pie chart shows, time people touch shelves is not high Maybe because there are more varaieties for different products on these shelves so it makes people more hesitant to buy from them. We recommend that trying to display the products on more area so that people be more decisive. ") 
     
     # Create the pie chart
-    # plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%')
+    plt.figure()
+    plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%')
 
     # Add a title
     # plt.title('Pie Chart Example')
 
     # # Display the chart
     # plt.show()
+    plt.savefig('analytics/Pie_Chart.png')
 
     categories = ['Time no people in front of shelves', 'Time people in front of shelves ']  # Categories on the x-axis
     values = [((counterT-(counter_onShelf+counter_awayShelf))/counterT)*100 ,( (counter_onShelf+counter_awayShelf)/counterT)*100]  # Values or heights of the bars
 
+    plt.figure()
     # Create the bar graph
-    # plt.bar(categories, values, color=['red',  'green'])
+    plt.bar(categories, values, color=['red',  'green'])
     if 1.2*(counterT-(counter_onShelf+counter_awayShelf)) < (counter_onShelf+counter_awayShelf):
         print("As the bar graph shows, time people pass by and inspects these shelves is long which indicates that people have high interest toward products on these shelves. We recommend that is you want to let a specific product to be noticed by large number of people to display is on these shelves. ") 
     elif 1.1*(counterT-(counter_onShelf+counter_awayShelf)) < (counter_onShelf+counter_awayShelf):
@@ -468,19 +474,32 @@ def main(filename):
     
         
     # Add labels and title
-    # plt.xlabel('Time')
-    # plt.ylabel('Ratio')
-    # plt.title('Ratio between time people infront of shelves and no one infront of the shelves')
+    plt.xlabel('Time')
+    plt.ylabel('Ratio')
+    plt.title('Ratio between time people infront of shelves and no one infront of the shelves')
 
     # # Display the graph
     # plt.show()
-
+    plt.savefig('analytics/Bar_Chart.png')
 if __name__ == "__main__":
     import time
     filepath = os.getcwd() + sys.argv[1]
     file_size = os.path.getsize(filepath)
     # print(f"Processing file: {sys.argv[1]}, size: {file_size}\n")
     start = time.time()
-    main(filepath)
+    if 'extracted' in filepath:
+        for item in os.listdir(filepath):
+            if os.path.isfile(os.path.join(filepath, item)):
+                videopath = os.path.join(filepath, item)
+                try:
+                    print("Training.")
+                    train(os.path.join(filepath, 'training'))
+                    print("Training Finished.")
+                except:
+                    pass
+    else:
+        videopath = filepath
+    main(videopath)
+    
     end = time.time()
     print(f"Duration (seonds): {end - start}")

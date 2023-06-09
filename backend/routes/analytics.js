@@ -1,40 +1,100 @@
 var express = require("express");
 var router = express.Router();
-const multer  = require('multer');
-const path = require('path');
-const upload = multer({ dest: 'uploads/' });
-const spawn = require('child_process').spawn;
+const multer = require("multer");
+const path = require("path");
+const upload = multer({
+    dest: "uploads/"
+});
+const spawn = require("child_process").spawn;
+const zip = require("node-stream-zip");
+const fs = require("fs");
 
-router.get('/', (req, res, ) => {
+router.get("/", (req, res) => {
     // res.json({message: "Analytics endpoint is up."});
-    const fileName = '/screenshots/frame0.jpg';
-    res.json({dataAnalysis: path.resolve(__dirname, '../../analytics/' + fileName)});
+    const fileName = "/screenshots/frame0.jpg";
+    res.json({
+        dataAnalysis: path.resolve(__dirname, "../../analytics/" + fileName)
+    });
 });
 
-router.post('/', upload.single('userFile'), (req, res) => {
-    console.log('Prcessing file:');
+router.post("/", upload.single("userFile"), (req, res) => {
+    console.log("Prcessing file:");
     console.log(req.file);
-    const pyProg = spawn('python', ['../analytics/analytics.py', '\\uploads\\' + req.file.filename]);
-    let msg = ''
-    pyProg.stdout.on('data', function(data) {
+    var pyProg;
+    var msg = "";
+    if (req.file.originalname.split(".").pop() == "zip") {
+        
+        const StreamZip = require('node-stream-zip');
+        const zip = new StreamZip({ file: req.file.path });
+        zip.on('ready', () => {
+            // fs.mkdirSync('extracted');
+            fs.mkdirSync('extracted/' + req.file.filename);
+            zip.extract(null, "extracted/" + req.file.filename + "/" , (err, count) => {
+                console.log(err ? 'Extract error' : `Extracted ${count} entries`);
+                zip.close();
+            });
+        });
+        // Handle errors
+        zip.on('error', err => { /*...*/ });
+        pyProg = spawn("python", [
+            "../analytics/analytics.py", "\\extracted\\" + req.file.filename
+        ]);
+    } else {
+        pyProg = spawn("python", ["../analytics/analytics.py", "\\uploads\\" + req.file.filename]);
+        // msg = req.file.originalname.split(".").pop() + "\n";
+    }
+    pyProg.stdout.on("data", function(data) {
         console.log(data.toString());
-        msg += data.toString() + '\n'
+        msg += data.toString() + "\n";
     });
+    pyProg.stderr.on("data", function(data) {
+        console.log(data.toString());
+    });
+    pyProg.on("exit", function(code, signal) {
+        res.json({
+            message: msg
+        });
 
-    pyProg.on('exit', function(code, signal) {
-        // const fileName = '/screenshots/frame0.jpg';
-        // const options = {
-        //     root: path.resolve(__dirname, '../../analytics/')
-        // };
-        // res.sendFile(fileName, options, function (err) {
-        //     if (err) {
-        //         next(err);
-        //     } else {
-        //         console.log('Sent:', fileName);
+        console.log("Sent response.");
+        fs.unlink(req.file.path, err => {
+            if (err) {
+                console.error("Failed to delete the file:", err);
+            } else {
+                console.log("File deleted successfully");
+            }
+        });
+        if (req.file.originalname.split(".").pop() == "zip") {
+            fs.rm("extracted\\" + req.file.filename, { recursive: true }, (err) => {
+                if (err) {
+                console.error('Failed to delete the folder:', err);
+                } else {
+                console.log('Folder deleted successfully');
+                }
+            });
+        }
+        // fs.readdir("uploads/", (err, files) => {
+        //   if (err)
+        //   throw err;
+
+        //   for (const file of files) {
+        //         fs.unlink(path.join("uploads/", file), err => {
+        //           if (err)
+        //           throw err;
+        //         });
         //     }
-        // });
-        res.json({message: msg});
-        console.log('Sent response.')
+        //   });
+
+        //   fs.readdir("extracted/", (err, files) => {
+        //     if (err)
+        //     throw err;
+
+        //     for (const file of files) {
+        //           fs.unlink(path.join("uploads/", file), err => {
+        //             if (err)
+        //             throw err;
+        //           });
+        //       }
+        //     });
     });
 });
-module.exports = router
+module.exports = router;
