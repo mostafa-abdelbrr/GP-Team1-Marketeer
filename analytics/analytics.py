@@ -435,7 +435,7 @@ def main(filename):
 
 
     save_frames(cropped_photos)
-    print(f'Starting detection, len of imgs = {len(cropped_photos)}.')
+    # print(f'Starting detection, len of imgs = {len(cropped_photos)}.')
     detectProducts(cropped_photos)
     
     sizes = [counter_onShelf,
