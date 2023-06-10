@@ -80,29 +80,10 @@ router.post("/", upload.single("userFile"), (req, res) => {
                 }
             });
         }
-        // fs.readdir("uploads/", (err, files) => {
-        //   if (err)
-        //   throw err;
-
-        //   for (const file of files) {
-        //         fs.unlink(path.join("uploads/", file), err => {
-        //           if (err)
-        //           throw err;
-        //         });
-        //     }
-        //   });
-
-        //   fs.readdir("extracted/", (err, files) => {
-        //     if (err)
-        //     throw err;
-
-        //     for (const file of files) {
-        //           fs.unlink(path.join("uploads/", file), err => {
-        //             if (err)
-        //             throw err;
-        //           });
-        //       }
-        //     });
+        var filenames = fs.readdirSync('analytics/');
+        for (const filename of filenames) {
+            fs.rmSync("analytics/" + filename);
+        }
     });
 });
 module.exports = router;
