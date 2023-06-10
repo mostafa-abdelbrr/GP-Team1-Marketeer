@@ -42,7 +42,7 @@ def detectProducts(imgs):
     try:
         with open('HOG-model-internal-dataset.pickle', 'rb') as modelFile:
             clf = pickle.load(modelFile)
-        print(f'Length of imgs is: {len(imgs)}')
+        # print(f'Length of imgs is: {len(imgs)}')
         for img in imgs:
             try:
                 img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -59,6 +59,6 @@ def detectProducts(imgs):
         plt.plot(histogram)
         plt.savefig('analytics/histogram.png')
     except Exception as e:
-        print(f'Training error: {e}')
+        # print(f'Training error: {e}')
         pass
     return 

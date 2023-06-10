@@ -50,9 +50,17 @@ router.post("/", upload.single("userFile"), (req, res) => {
     pyProg.stderr.on("data", function(data) {
         console.log(data.toString());
     });
+    var plots = [];
     pyProg.on("exit", function(code, signal) {
+        var plots = [];
+        var filenames = fs.readdirSync('analytics/');
+        for (const filename of filenames) {
+            var encodedPlot = fs.readFileSync('analytics/' + filename, {encoding: 'base64'});
+            plots.push(encodedPlot.toString());
+        }
         res.json({
-            message: msg
+            message: msg,
+            images: plots
         });
 
         console.log("Sent response.");

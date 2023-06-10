@@ -435,7 +435,7 @@ def main(filename):
 
 
     save_frames(cropped_photos)
-    print(f'Starting detection, len of imgs = {len(cropped_photos)}.')
+    # print(f'Starting detection, len of imgs = {len(cropped_photos)}.')
     detectProducts(cropped_photos)
     
     sizes = [counter_onShelf,
@@ -492,9 +492,9 @@ if __name__ == "__main__":
             if os.path.isfile(os.path.join(filepath, item)):
                 videopath = os.path.join(filepath, item)
                 try:
-                    print("Training.")
+                    # print("Training.")
                     train(os.path.join(filepath, 'training'))
-                    print("Training Finished.")
+                    # print("Training Finished.")
                 except:
                     pass
     else:
@@ -502,4 +502,4 @@ if __name__ == "__main__":
     main(videopath)
     
     end = time.time()
-    print(f"Duration (seonds): {end - start}")
+    # print(f"Duration (seonds): {end - start}")
