@@ -435,7 +435,7 @@ def main(filename):
 
 
     save_frames(cropped_photos)
-    # print(f'Starting detection, len of imgs = {len(cropped_photos)}.')
+    print(f'Starting detection, len of imgs = {len(cropped_photos)}.')
     detectProducts(cropped_photos)
     
     sizes = [counter_onShelf,
@@ -495,7 +495,8 @@ if __name__ == "__main__":
                     # print("Training.")
                     train(os.path.join(filepath, 'training'))
                     # print("Training Finished.")
-                except:
+                except Exception as e:
+                    print(f'Training error: {e}')
                     pass
     else:
         videopath = filepath

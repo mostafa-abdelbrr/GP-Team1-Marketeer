@@ -13,52 +13,81 @@ import matplotlib.pyplot as plt
 
 plt.ioff()
 
+from PIL import Image
+
+def auto_rotate_image(image_path, angle):
+    image = Image.open(image_path)
+    rotated_image = image.rotate(angle, expand=True)
+    file_name, extension = image_path.split('.')
+    new_file_name = f"{file_name}_{angle}.{extension}"
+    rotated_image.save(new_file_name)
+    return new_file_name
+
+
 def train(training_path):
-
     labels = {}
-
+    labels_svm = []
     for filename in os.listdir(training_path):
         imageFile = os.path.join(training_path, filename)
         img = cv2.imread(imageFile)
         filename = filename.split('_')
-        labels[filename[0].replace('.jpg', '')] = imageFile
-
+        label = filename[0].replace('.jpg', '')
+        if label not in labels:
+            labels[label] = []
+        for angle in range(360):
+            labels[label].append(auto_rotate_image(imageFile, angle))
+            labels_svm.append(label)
+        os.remove(imageFile)
     hogFeatures = []
-
     for label in labels:
-        img = cv2.imread(labels[label], cv2.IMREAD_GRAYSCALE)
-        img = cv2.resize(img.copy(), (128, 256))
-        hogFeatures.append(list(hog(img, 16)))
-
+        for filename in labels[label]:
+            img = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
+            img = cv2.resize(img.copy(), (64, 128))
+            hogFeatures.append(list(hog(img, 16)))
+    # print(f'Training features: {len(hogFeatures)}, {len(labels_svm)}')
     clf = SVC()
-    clf.fit(hogFeatures, list(labels.keys()))
+
+    clf.fit(hogFeatures, labels_svm)
     with open(f'HOG-model-internal-dataset.pickle', 'wb') as modelFile:
         pickle.dump(clf, modelFile)
+    # print('Saved model file.')
 
 def detectProducts(imgs):
     features = []
-    # with open('HOG-model-internal-dataset-2023-06-03 21-22-09.702882.pickle', 'rb') as modelFile:
-    #     clf = pickle.load(modelFile)
     try:
         with open('HOG-model-internal-dataset.pickle', 'rb') as modelFile:
             clf = pickle.load(modelFile)
-        # print(f'Length of imgs is: {len(imgs)}')
         for img in imgs:
             try:
                 img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             except:
                 pass
-        # print(img.shape)
-            img = cv2.resize(img.copy(), (128, 256))
-            features.append(list(hog(img, 16)))
-        # clf.predict(features)
-        features = list(features)
+            img = cv2.resize(img.copy(), (64, 128))
+            # print('here')
+            features.append(hog(img, 16))
+        # print(f'Image features: {len(features[0])}')
+        features = np.array(features)
         predictions = clf.predict(features)
-        histogram = np.histogram(predictions, bins=len(np.unique(predictions)))
+        # print(f'Predictions: {predictions}')
+        itemFrequency = {}
+        for prediction in predictions:
+            if prediction in itemFrequency:
+                itemFrequency[prediction] += 1
+            else:
+                itemFrequency[prediction] = 1
+        item_axis = []
+        frequency_axis = []
+        for item in itemFrequency:
+            item_axis.append(item)
+            frequency_axis.append(itemFrequency[item])
         plt.figure()
-        plt.plot(histogram)
-        plt.savefig('analytics/histogram.png')
+        plt.bar(item_axis, frequency_axis)
+        plt.title('Frequncy of products')
+        plt.xlabel('product name')
+        plt.ylabel('frequency name')
+        plt.savefig('analytics//ProductFrequency')
+        
     except Exception as e:
-        # print(f'Training error: {e}')
+        print(f'Training error: {e}')
         pass
     return 
