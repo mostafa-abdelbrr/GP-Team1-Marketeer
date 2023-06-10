@@ -88,6 +88,6 @@ def detectProducts(imgs):
         plt.savefig('analytics//ProductFrequency')
         
     except Exception as e:
-        print(f'Training error: {e}')
+        # print(f'Training error: {e}')
         pass
     return 
