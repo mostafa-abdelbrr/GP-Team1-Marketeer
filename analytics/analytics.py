@@ -460,7 +460,7 @@ def main(filename):
 
     # # Display the chart
     # plt.show()
-    plt.savefig('analytics/Shelve_Interaction.png')
+    plt.savefig('analytics/1_Shelve_Interaction.png')
 
     categories = ['Time no people in front of shelves', 'Time people in front of shelves ']  # Categories on the x-axis
     values = [((counterT-(counter_onShelf+counter_awayShelf))/counterT)*100 ,( (counter_onShelf+counter_awayShelf)/counterT)*100]  # Values or heights of the bars
@@ -483,7 +483,7 @@ def main(filename):
 
     # # Display the graph
     # plt.show()
-    plt.savefig('analytics/Shelve_Attention_Time.png')
+    plt.savefig('analytics/2_Shelve_Attention_Time.png')
 
     TotalT=counter_onShelf+counter_awayShelf
     sizes = [(TotalT-counterObj),
@@ -505,7 +505,7 @@ def main(filename):
 
     # Display the chart
     # plt.show()
-    plt.savefig('analytics/Shelve_Inspection.png')
+    plt.savefig('analytics/3_Shelve_Inspection.png')
 if __name__ == "__main__":
     import time
     filepath = os.getcwd() + sys.argv[1]

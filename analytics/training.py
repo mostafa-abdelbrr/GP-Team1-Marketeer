@@ -31,7 +31,7 @@ def train(training_path):
         imageFile = os.path.join(training_path, filename)
         img = cv2.imread(imageFile)
         filename = filename.split('_')
-        label = filename[0].replace('.jpg', '')
+        label = filename[0].replace('.jpg', '').replace('.png', '')
         if label not in labels:
             labels[label] = []
         for angle in range(360):
@@ -85,7 +85,7 @@ def detectProducts(imgs):
         plt.title('Frequncy of products')
         plt.xlabel('product name')
         plt.ylabel('frequency name')
-        plt.savefig('analytics//ProductFrequency')
+        plt.savefig('analytics//4_ProductFrequency')
         
     except Exception as e:
         # print(f'Training error: {e}')
