@@ -50,7 +50,6 @@ router.post("/", upload.single("userFile"), (req, res) => {
     pyProg.stderr.on("data", function(data) {
         console.log(data.toString());
     });
-    var plots = [];
     pyProg.on("exit", function(code, signal) {
         var plots = [];
         var filenames = fs.readdirSync('analytics/');
@@ -58,9 +57,24 @@ router.post("/", upload.single("userFile"), (req, res) => {
             var encodedPlot = fs.readFileSync('analytics/' + filename, {encoding: 'base64'});
             plots.push(encodedPlot.toString());
         }
+        plots.push('')
         res.json({
-            message: msg,
-            images: plots
+            shelve_interaction: {
+                label: msg.split('\r\n')[0],
+                plot: plots[0]
+            },
+            shelve_attention_time:{
+                label: msg.split('\r\n')[1],
+                plot: plots[1]
+            },
+            shelve_inspection: {
+                label: msg.split('\r\n')[2],
+                plot: plots[2]
+            },
+            product_frequency: {
+                label: 'The bar plot shows the frequency of people inspecting each product.',
+                plot: plots[3]
+            }
         });
 
         console.log("Sent response.");

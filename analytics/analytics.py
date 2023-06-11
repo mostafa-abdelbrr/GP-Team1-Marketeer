@@ -456,11 +456,11 @@ def main(filename):
     plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%')
 
     # Add a title
-    # plt.title('Pie Chart Example')
+    plt.title('Shelve Interaction')
 
     # # Display the chart
     # plt.show()
-    plt.savefig('analytics/Pie_Chart.png')
+    plt.savefig('analytics/Shelve_Interaction.png')
 
     categories = ['Time no people in front of shelves', 'Time people in front of shelves ']  # Categories on the x-axis
     values = [((counterT-(counter_onShelf+counter_awayShelf))/counterT)*100 ,( (counter_onShelf+counter_awayShelf)/counterT)*100]  # Values or heights of the bars
@@ -479,11 +479,33 @@ def main(filename):
     # Add labels and title
     plt.xlabel('Time')
     plt.ylabel('Ratio')
-    plt.title('Ratio between time people infront of shelves and no one infront of the shelves')
+    plt.title('Time in front of shelves vs time without people in front of shelves')
 
     # # Display the graph
     # plt.show()
-    plt.savefig('analytics/Bar_Chart.png')
+    plt.savefig('analytics/Shelve_Attention_Time.png')
+
+    TotalT=counter_onShelf+counter_awayShelf
+    sizes = [(TotalT-counterObj),
+    counterObj]  # Sizes or proportions of different categories
+    labels = ['Time customer infront of shelves without inspecting products', 'Time inspecting a product']  # Labels for each category
+    colors = ['orange', 'blue']  # Colors for each category
+
+    if 0.6*((TotalT-counterObj)) < (counterObj):
+        print("As the pie chart shows, time people ispecting products is high  which reflects that people may have high tendancy to buy products from these shelves. ") 
+    else:
+        print("As the pie chart shows, time people ispecting products is relatively not high  which reflects that people are not attracted enough towards products on these shelves. ") 
+    
+    plt.figure()
+    # Create the pie chart
+    plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%')
+
+    # Add a title
+    plt.title('Shelve Inspection')
+
+    # Display the chart
+    # plt.show()
+    plt.savefig('analytics/Shelve_Inspection.png')
 if __name__ == "__main__":
     import time
     filepath = os.getcwd() + sys.argv[1]
