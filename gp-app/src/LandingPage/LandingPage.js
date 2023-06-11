@@ -6,7 +6,6 @@ import Sample from "../Images/Sample.png";
 export class LandingPage extends Component {
   Continue = (e) => {
     e.preventDefault();
-    console.log("Continue");
     this.props.nextStep();
   };
   render() {
@@ -15,7 +14,7 @@ export class LandingPage extends Component {
         <div>
           <div className="Title">
             <img src={Logo} alt="logo" className="logo" />
-            <div className="title"> Markteer </div>
+            <div className="title"> Marketeer </div>
           </div>
           <p className="Vision"> Our Vision </p>
           <p className="VisionText">

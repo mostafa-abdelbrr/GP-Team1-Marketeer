@@ -43,11 +43,10 @@
 
 // export default MainSequence;
 
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import "../Sequence/MainSequence.css";
 import LandingPage from "../LandingPage/LandingPage";
 import FileUpload from "../Upload/FileUpload.component";
-import Results from "../Results/Results";
 
 export default class MainSequence extends Component {
   
@@ -79,10 +78,6 @@ export default class MainSequence extends Component {
             handleChange={this.handleChange}
             updateFilesCb={this.props.updateUploadedFiles}
           />
-        );
-      case 3:
-        return (
-          <Results/>
         );
       default:
       // return ();
