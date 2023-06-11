@@ -238,15 +238,35 @@ function UploadPage() {
                 </p>
               </div>
             </div>
-            <div>
-              <img src={Pie} alt="Pie Chart" className="chart-img" />
+            <div className="box">
+              <div>
+                <img src={Pie} alt="Pie Chart" className="chart-img" />
 
-              <p className="Result-Text">
-                {" "}
-                As the pie chart shows, time people ispecting products is high
-                which reflects that people may have high tendancy to buy
-                products from these shelves
-              </p>
+                <p className="Result-Text">
+                  {" "}
+                  As the pie chart shows, time people ispecting products is high
+                  which reflects that people may have high tendancy to buy
+                  products from these shelves
+                </p>
+              </div>
+              <div>
+                {zipCheck && (
+                  <div>
+                    <img
+                      src={`data:image/jpeg;base64,${thirdChart}`}
+                      alt="Pie Chart"
+                      className="chart-img"
+                    />
+
+                    <p className="Result-Text">
+                      {" "}
+                      As the pie chart shows, time people ispecting products is
+                      high which reflects that people may have high tendancy to
+                      buy products from these shelves
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
             {/* <p className="Result-Text">{UploadedMsg.message}</p> */}
           </div>
